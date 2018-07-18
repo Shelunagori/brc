@@ -19,7 +19,7 @@
                             <tr>
                                 <td valign="top">
                                     <span style="color:#96989A;">Time</span>
-                                    <span style="color:#373435;margin-left:13px;">15 min</span>
+                                    <span style="color:#373435;margin-left:13px;" id="timeLabel_<?php echo $Table->id; ?>" ></span>
                                 </td>
                             </tr>
                             <tr>
@@ -147,9 +147,30 @@ $(document).ready(function() {
         }   
     }); 
 
+   
 
 });
 ";
+
+foreach($Tables as $Table){
+    $js.="
+        setInterval(
+            function(){
+                var startTime = new Date(".$Table->occupied_time->format('Y,m-1,d,H,i,s').");
+                var thisTime = new Date();
+                var diff = thisTime.getTime() - startTime.getTime();
+                var hh = Math.floor(diff / 1000 / 60 / 60);
+                diff -= hh * 1000 * 60 * 60;
+                var mm = Math.floor(diff / 1000 / 60);
+                diff -= mm * 1000 * 60;
+                var ss = Math.floor(diff / 1000);
+                if(hh==0){ var t=mm+':'+ss; }
+                else{ var t=hh+':'+mm+':'+ss; }
+                $('span#timeLabel_".$Table->id."').html(t);
+            }
+        , 1000);
+    ";
+}
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>

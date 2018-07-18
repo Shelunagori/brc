@@ -40,6 +40,7 @@ class TablesController extends AppController
         $Table->c_name=$c_name;
         $Table->c_mobile=$c_mobile;
         $Table->no_of_pax=$c_pax;
+        $Table->occupied_time=date( "Y-m-d H:i:s" );
         if($this->Tables->save($Table)){
             echo '1';
         }else{
