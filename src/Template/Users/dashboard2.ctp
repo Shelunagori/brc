@@ -46,7 +46,7 @@
 }
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
-<div class="row" style="background: #FEFEFE;padding: 15px;">
+<!-- <div class="row" style="background: #FEFEFE;padding: 15px;">
 	<div class="col-md-6" >
 		<span id="BackToTables" style="display:none;font-weight: bold;" ><i class="fa fa-arrow-left"></i></span>
 		<span class="topBtnActive">Dinner In</span>
@@ -59,7 +59,7 @@
 		<span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
 		<span style="color: #2FBD9F;font-size: 15px;margin-left: 8px;">₹5000</span>
 	</div>
-</div>
+</div> -->
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" />
 	<div class="row TableView" style="padding:10px;">

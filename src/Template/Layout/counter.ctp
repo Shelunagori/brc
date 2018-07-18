@@ -85,21 +85,12 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
-								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;">Find Bill</span>
-							</a>
-						</li>
-						<li class="dropdown dropdown-user">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo $coreVariable['user_name']; ?></span>
 								<i class="fa fa-sort-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
 								<li>
-									<a href="extra_profile.html">
-									<i class="icon-user"></i> My Profile </a>
-								</li>
-								<li>
-									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Employees/logout',['escape' => false]).'</li>'; ?>
+									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
 								</li>
 							</ul>
 						</li>
