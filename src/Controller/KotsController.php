@@ -18,8 +18,19 @@ class KotsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
+    public function new($table_id=null)
+    {
+        $this->viewBuilder()->layout('counter');
+
+
+        $ItemCategories=$this->Kots->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);
+        $Items=$this->Kots->ItemCategories->ItemSubCategories->Items->find()->order(['Items.name'=>'ASC']);
+        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id'));
+    }
+
     public function index()
     {
+        $table_id=$this->request->query('table_id');
         $table_id=$this->request->query('table_id');
         $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
 
@@ -64,9 +75,10 @@ class KotsController extends AppController
 			$kot->voucher_no=1;
 		}
 			
-		$kot->table_id=$table_id;
+        $kot->table_id=$table_id;
+		$kot->created_by=$this->Auth->User('id');
 		
-		$kot_rows=[];
+		$kot_rows=[]; $total_amount=0;
 		foreach($q as $row){
 			$kot_row = $this->Kots->KotRows->newEntity();
 			$kot_row->item_id=$row['item_id'];
@@ -74,7 +86,9 @@ class KotsController extends AppController
 			$kot_row->rate=$row['rate'];
 			$kot_row->amount=$row['amount'];
 			$kot_rows[]=$kot_row;
+            $total_amount+=$row['amount'];
 		}
+        $kot->amount=$total_amount;
 		$kot->kot_rows=$kot_rows;
 		if ($this->Kots->save($kot)) {
 			echo '1';

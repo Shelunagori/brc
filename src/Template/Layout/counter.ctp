@@ -170,6 +170,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		});
 		
 		
+		
 		function round(value, exp) {
 		  if (typeof exp === 'undefined' || +exp === 0)
 			return Math.round(value);

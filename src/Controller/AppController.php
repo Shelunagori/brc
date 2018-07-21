@@ -67,7 +67,8 @@ class AppController extends Controller
         ]);
 		
 		$coreVariable = [
-			'user_name' => $this->Auth->User('name')
+            'user_name' => $this->Auth->User('name'),
+			'role' => $this->Auth->User('role'),
 		];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));

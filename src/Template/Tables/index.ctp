@@ -1,4 +1,3 @@
-
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
 <div style="background: #EBEEF3;">
     <input type="hidden"  id="tableInput" />
@@ -8,41 +7,74 @@
             <?php 
             $i=0;
             foreach($Tables as $Table){ ?>
-            <div class="tblBox" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
+            <div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
                 <span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
-                <div style="font-size:14px;">
-                    <div align="center">
-                        <span style="font-size: 14px; color: #3b393a;">Steward Name</span>
+                <?php if($Table->status=='occupied'){ ?>
+                    <div style="font-size:14px;">
+                        <div align="center">
+                            <span style="font-size: 14px; color: #3b393a;">.</span>
+                        </div>
+                        <div style="padding:2px 10px;">
+                            <table width="100%" style="font-size:12px;line-height: 22px;">
+                                <tr>
+                                    <td valign="top">
+                                        <span style="color:#96989A;">Time</span>
+                                        <span style="color:#373435;margin-left:13px;" id="timeLabel_<?php echo $Table->id; ?>" ></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <span style="color:#96989A;">Customer Name</span>
+                                        <span style="color:#373435;margin-left:13px;"><?php echo $Table->c_name; ?></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <span style="color:#96989A;">No. of Pax</span>
+                                        <span style="color:#373435;margin-left:13px;"><?php echo $Table->no_of_pax; ?></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <span style="color:#96989A;">Pax Per Rate</span>
+                                        <span style="color:#373435;margin-left:13px;"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <span style="color:#96989A;">Running Billing Amount</span>
+                                        <span style="color:#373435;margin-left:13px;"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div style="padding:2px 10px;">
-                        <table width="100%" style="font-size:12px;line-height: 22px;">
-                            <tr>
-                                <td valign="top">
-                                    <span style="color:#96989A;">Time</span>
-                                    <span style="color:#373435;margin-left:13px;" id="timeLabel_<?php echo $Table->id; ?>" ></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">
-                                    <span style="color:#96989A;">Customer Name</span>
-                                    <span style="color:#373435;margin-left:13px;">Rahul Soni</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">
-                                    <span style="color:#96989A;">Pax Per Rate</span>
-                                    <span style="color:#373435;margin-left:13px;">₹50</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">
-                                    <span style="color:#96989A;">Running Billing Amount</span>
-                                    <span style="color:#373435;margin-left:13px;">₹450</span>
-                                </td>
-                            </tr>
-                        </table>
+                <?php }else{ ?>
+                    <div style="font-size:14px;">
+                        <div align="center">
+                            <span style="font-size: 14px; color: #3b393a;">.</span>
+                        </div>
+                        <div style="padding:2px 10px;">
+                            <table width="100%" style="font-size:12px;line-height: 22px;">
+                                <tr>
+                                    <td valign="top">
+                                        <div align="center" >
+                                            <?php echo $this->Html->image('/table-icon.png', ['alt' => 'Empty Table']); ?>
+                                            <br/>
+                                            <?php if($coreVariable['role']=='guard'){ ?>
+                                                <span class="EmptyTbl" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">Available Now</span>
+                                            <?php }else{ ?>
+                                                <span style="color: #97999B;">Available Now</span>
+                                            <?php } ?>
+                                           
+                                            <div style="height: 37px;"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
             <?php 
             if($i==10){ $i=0; }
@@ -50,7 +82,18 @@
         </div>
     </div>
 </div>
+
+
 <style>
+.goToKot:hover{
+    cursor: pointer;
+}
+.EmptyTbl{
+    color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+}
+.EmptyTbl:hover{
+    cursor: pointer;
+}
 #kotBox td{
     padding:12px 0px;
 }
@@ -73,9 +116,7 @@
     border-radius: 5px !important;
     font-weight: bold;
 }
-.tblBox:hover{
-    cursor: pointer;
-}
+
 
 #TablesHeading{
     color: #f16969;
@@ -94,7 +135,7 @@
 <?php
 $js="
 $(document).ready(function() {
-    $('.tblBox').die().live('click',function(event){
+    $('.EmptyTbl').die().live('click',function(event){
         var table_id=$(this).attr('table_id');
         var table_name=$(this).attr('table_name');
         $('span#tableLabel').html(table_name);
@@ -148,28 +189,38 @@ $(document).ready(function() {
     }); 
 
    
+    $('.goToKot').die().live('click',function(event){
+        var table_id=$(this).attr('table_id');
+        var table_name=$(this).attr('table_name');
+        var url='".$this->Url->build(['controller'=>'Kots','action'=>'new'])."';
+        url=url+'/'+table_id;
+        window.location.href = url;
+    }); 
 
 });
 ";
 
 foreach($Tables as $Table){
-    $js.="
-        setInterval(
-            function(){
-                var startTime = new Date(".$Table->occupied_time->format('Y,m-1,d,H,i,s').");
-                var thisTime = new Date();
-                var diff = thisTime.getTime() - startTime.getTime();
-                var hh = Math.floor(diff / 1000 / 60 / 60);
-                diff -= hh * 1000 * 60 * 60;
-                var mm = Math.floor(diff / 1000 / 60);
-                diff -= mm * 1000 * 60;
-                var ss = Math.floor(diff / 1000);
-                if(hh==0){ var t=mm+':'+ss; }
-                else{ var t=hh+':'+mm+':'+ss; }
-                $('span#timeLabel_".$Table->id."').html(t);
-            }
-        , 1000);
-    ";
+    if($Table->status=='occupied'){
+        $js.="
+            setInterval(
+                function(){
+                    var startTime = new Date(".$Table->occupied_time->format('Y,m-1,d,H,i,s').");
+                    var thisTime = new Date();
+                    var diff = thisTime.getTime() - startTime.getTime();
+                    var hh = Math.floor(diff / 1000 / 60 / 60);
+                    diff -= hh * 1000 * 60 * 60;
+                    var mm = Math.floor(diff / 1000 / 60);
+                    diff -= mm * 1000 * 60;
+                    var ss = Math.floor(diff / 1000);
+                    if(hh==0){ var t=mm+':'+ss; }
+                    else{ var t=hh+':'+mm+':'+ss; }
+                    $('span#timeLabel_".$Table->id."').html(t);
+                }
+            , 1000);
+        ";
+    }
+    
 }
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
