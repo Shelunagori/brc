@@ -35,8 +35,8 @@ class TablesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('KotRows', [
-            'foreignKey' => 'kot_id'
+        $this->hasMany('Kots', [
+            'foreignKey' => 'table_id'
         ]);
     }
 
