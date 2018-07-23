@@ -29,7 +29,12 @@ class UsersController extends AppController
 			{
 				$user=$this->Users->get($user['id']);
                 $this->Auth->setUser($user);
-				return $this->redirect(['controller'=>'Tables','action' => 'index']);
+                if($user['role']=='cook'){
+                    return $this->redirect(['controller'=>'Kots','action' => 'cookDashboard']);
+                }
+                else{
+                   return $this->redirect(['controller'=>'Tables','action' => 'index']); 
+                }
             }
             $this->Flash->error(__('Invalid Username or Password'));
         }
