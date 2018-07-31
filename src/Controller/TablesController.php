@@ -22,7 +22,17 @@ class TablesController extends AppController
     {
         $this->viewBuilder()->layout('counter');
         
-        $Tables=$this->Tables->find();
+        $q = $this->Promotions->PromotionsUsers->find();
+        $q->select([$q->func()->count('*')]);
+        
+        $Tables=$this->Tables->find()
+                            ->select([
+                                'id',
+                                'name',
+                                'status',
+                                'kot_amount' => $q->where(['PromotionsUsers.promotion_id = Promotions.id']),
+                                'total_view' => $q2->where(['PromotionsViews.promotion_id = Promotions.id'])
+                            ]);
 
         $this->set(compact('Tables'));
     }
